@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<title>Login - La Nueva Familia</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="glass" style="max-width:400px;margin:100px auto;padding:30px;border-radius:20px;">
+
+<h2>Login</h2>
+
+<input id="email" placeholder="Email" style="width:100%;padding:10px;margin:10px 0;">
+<input id="password" type="password" placeholder="Parolă" style="width:100%;padding:10px;margin:10px 0;">
+
+<button onclick="login()">Login</button>
+<button onclick="register()">Register</button>
+
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+
+import {
+  getDatabase,
+  ref,
+  set
+} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js";
+
+import { firebaseConfig } from "./firebase.js";
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getDatabase(app);
+
+// REGISTER
+window.register = function () {
+
+  const email = document.getElementById("email").value;
+  const pass = document.getElementById("password").value;
+
+  createUserWithEmailAndPassword(auth, email, pass)
+    .then((userCred) => {
+
+      const user = userCred.user;
+
+      // salvăm user în DB
+      set(ref(db, "users/" + user.uid), {
+        email: email,
+        role: "member",
+        createdAt: Date.now()
+      });
+
+      alert("Cont creat!");
+      window.location.href = "index.html";
+    })
+    .catch(err => alert(err.message));
+};
+
+// LOGIN
+window.login = function () {
+
+  const email = document.getElementById("email").value;
+  const pass = document.getElementById("password").value;
+
+  signInWithEmailAndPassword(auth, email, pass)
+    .then(() => {
+      alert("Logat!");
+      window.location.href = "index.html";
+    })
+    .catch(err => alert(err.message));
+};
+
+// dacă e logat -> redirect
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    console.log("Logged:", user.email);
+  }
+});
+</script>
+
+</body>
+</html>
