@@ -1,113 +1,169 @@
 <!DOCTYPE html>
 <html lang="ro">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>La Nueva Familia Panel</title>
+    <link rel="icon" type="image/png" href="logo.png">
 
-<link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Nueva Familia Panel</title>
 
-<style>
-body {
-    margin: 0;
-    font-family: Poppins, Arial;
-    background: url("background.png") center/cover no-repeat fixed;
-    color: white;
-}
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
-.hidden { display: none; }
+    <style>
+        #loadingScreen {
+            position: fixed;
+            inset: 0;
+            background: url("background.png") center/cover no-repeat;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            z-index: 99999;
+            color: white;
+        }
 
-#loadingScreen {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.8);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 22px;
-    z-index: 9999;
-}
+        #loadingScreen::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.65);
+        }
 
-.app {
-    display: flex;
-}
+        .loading-text {
+            position: relative;
+            font-size: 28px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            animation: pulse 1.2s infinite;
+        }
 
-.sidebar {
-    width: 250px;
-    background: rgba(0,0,0,0.7);
-    padding: 20px;
-    min-height: 100vh;
-}
-
-.sidebar a {
-    display: block;
-    color: white;
-    padding: 10px;
-    text-decoration: none;
-    margin: 5px 0;
-}
-
-.sidebar a:hover {
-    background: #8b5cf6;
-}
-
-.main {
-    flex: 1;
-    padding: 20px;
-}
-
-.card {
-    background: rgba(0,0,0,0.6);
-    padding: 15px;
-    border-radius: 10px;
-    margin: 10px 0;
-}
-</style>
+        @keyframes pulse {
+            0% { opacity: 0.4; transform: scale(0.98); }
+            50% { opacity: 1; transform: scale(1.02); }
+            100% { opacity: 0.4; transform: scale(0.98); }
+        }
+    </style>
 </head>
 
 <body>
 
-<div id="loadingScreen">Se încarcă user...</div>
+<div id="loadingScreen">
+    <div class="loading-text">Loading Assets...</div>
+</div>
 
-<div class="app hidden" id="app">
+<div class="auth-screen" id="authScreen" style="display:none;">
+    <div class="auth-box glass">
 
-    <!-- SIDEBAR -->
+        <div class="logo auth-logo">
+            <h1>LA NUEVA</h1>
+            <span>FAMILIA</span>
+            <p>MAFIA PANEL</p>
+        </div>
+
+        <input type="text" id="username" placeholder="Nume cont">
+        <input type="password" id="password" placeholder="Parolă">
+
+        <button onclick="createAccount()">Intră în panel</button>
+
+    </div>
+</div>
+
+<div class="app" id="app" style="display:none;">
+
     <aside class="sidebar">
 
-        <h2>LA NUEVA</h2>
+        <div class="logo">
+            <h1>LA NUEVA</h1>
+            <span>FAMILIA</span>
+            <p>MAFIA PANEL</p>
+        </div>
 
-        <a href="#"><i class="fa fa-home"></i> Dashboard</a>
-        <a href="membri.html">Membri</a>
-        <a href="taskuri.html">Taskuri</a>
+        <nav>
+            <a class="active" href="#"><i class="fa-solid fa-house"></i> Dashboard</a>
+            <a href="membri.html"><i class="fa-solid fa-users"></i> Membri</a>
+            <a href="uniforma.html"><i class="fa-solid fa-shirt"></i> Uniformă</a>
+            <a href="locatii.html"><i class="fa-solid fa-location-dot"></i> Locații</a>
+            <a href="infocraft.html"><i class="fa-solid fa-circle-info"></i> Info-Craft</a>
+            <a href="craftarme.html"><i class="fa-solid fa-hammer"></i> Craft Arme</a>
+            <a href="taskuri.html"><i class="fa-solid fa-list-check"></i> Task-uri</a>
+            <a href="livrari.html"><i class="fa-solid fa-truck"></i> Livrări</a>
+            <a href="fonduri.html"><i class="fa-solid fa-money-bill-wave"></i> Fonduri</a>
+            <a href="telefon.html"><i class="fa-solid fa-phone"></i> Nr Tel</a>
+            <a href="taxa.html"><i class="fa-solid fa-money-bill"></i> Taxă</a>
+            <a href="donatii.html"><i class="fa-solid fa-hand-holding-dollar"></i> Donații</a>
+        </nav>
 
-        <button onclick="logout()">Logout</button>
     </aside>
 
-    <!-- MAIN -->
     <main class="main">
 
-        <div class="card">
-            <h2>Bun venit, <span id="accountName">...</span></h2>
+        <div class="hero">
 
-            <img id="profileAvatar" width="80" style="border-radius:50%;cursor:pointer">
+            <div class="profile-card glass">
 
-            <input type="file" id="avatarInput" hidden onchange="changeAvatar(event)">
+                <div class="avatar-box">
+                    <img id="profileAvatar"
+                         src="https://i.imgur.com/zYxDCQT.png"
+                         onclick="document.getElementById('avatarInput').click()">
+
+                    <input type="file" id="avatarInput" hidden onchange="changeAvatar(event)">
+                </div>
+
+                <div>
+                    <small>Bun venit înapoi,</small>
+                    <h2 id="accountName">User</h2>
+                    <span class="badge">Family Member</span>
+                </div>
+
+            </div>
+
         </div>
 
-        <div class="card">
-            <h3>Membri total: <span id="memberCount">0</span></h3>
-            <h3>Membri online: <span id="onlineCount">0</span></h3>
+        <div class="stats">
+
+            <div class="card glass">
+                <i class="fa-solid fa-users"></i>
+                <div>
+                    <small>MEMBRI</small>
+                    <h2 id="memberCount">0/50</h2>
+                </div>
+            </div>
+
+            <div class="card glass">
+                <i class="fa-solid fa-signal"></i>
+                <div>
+                    <small>ONLINE</small>
+                    <h2 id="onlineCount">0</h2>
+                </div>
+            </div>
+
         </div>
 
-        <div class="card">
-            <h3>Online members</h3>
-            <ul id="onlineMembers"></ul>
-        </div>
+        <div class="dashboard-grid">
 
-        <div class="card">
-            <h3>Phone: <span id="displayPhone">Nesetat</span></h3>
-            <h3>Tasks: <span id="displayTasks">0</span></h3>
+            <div class="panel glass">
+                <h3>MEMBRI ONLINE</h3>
+                <ul id="onlineMembers"></ul>
+            </div>
+
+            <div class="panel glass">
+
+                <h3>INFORMAȚII MEMBRU</h3>
+
+                <div>
+                    <strong>Număr telefon:</strong>
+                    <span id="displayPhone">Nesetat</span>
+                </div>
+
+                <div>
+                    <strong>Task-uri completate:</strong>
+                    <span id="displayTasks">0</span>
+                </div>
+
+            </div>
+
         </div>
 
     </main>
@@ -121,11 +177,10 @@ body {
 
 <script>
 const firebaseConfig = {
-  apiKey: "AIzaSyDz980MG1I3lAxz2Uda9e2D9wkS_03Heb4",
-  authDomain: "la-nueva-familia.firebaseapp.com",
-  databaseURL: "https://la-nueva-familia-default-rtdb.firebaseio.com",
-  projectId: "la-nueva-familia",
-  appId: "1:1010039699551:web:94f0d076866ef6719ac3ea"
+  apiKey: "XXX",
+  authDomain: "XXX",
+  databaseURL: "XXX",
+  projectId: "XXX",
 };
 
 firebase.initializeApp(firebaseConfig);
@@ -135,12 +190,11 @@ const db = firebase.database();
 
 let uid = null;
 
-
-// LOGIN CHECK
+// AUTH CHECK
 auth.onAuthStateChanged(async user => {
 
     if (!user) {
-        window.location.href = "login.html";
+        document.getElementById("authScreen").style.display = "flex";
         return;
     }
 
@@ -149,10 +203,8 @@ auth.onAuthStateChanged(async user => {
     const snap = await db.ref("users/" + uid).get();
     const data = snap.val();
 
-    if (!data) return;
-
     document.getElementById("loadingScreen").style.display = "none";
-    document.getElementById("app").classList.remove("hidden");
+    document.getElementById("app").style.display = "flex";
 
     document.getElementById("accountName").innerText = data.username;
     document.getElementById("profileAvatar").src = data.avatar;
@@ -214,10 +266,6 @@ function loadData() {
 
 
 // AVATAR
-document.getElementById("profileAvatar").onclick = () => {
-    document.getElementById("avatarInput").click();
-};
-
 function changeAvatar(e) {
 
     const file = e.target.files[0];
@@ -238,19 +286,7 @@ function changeAvatar(e) {
 }
 
 
-// LOGOUT
-function logout() {
-
-    db.ref("users/" + uid).update({
-        online: false
-    });
-
-    auth.signOut();
-    window.location.href = "login.html";
-}
-
-
-// OFFLINE FIX
+// BEFORE UNLOAD (offline)
 window.addEventListener("beforeunload", () => {
 
     if (!uid) return;
