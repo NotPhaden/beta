@@ -2,6 +2,7 @@
 <html lang="ro">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>La Nueva Familia Panel</title>
 
 <link rel="stylesheet" href="style.css">
@@ -10,55 +11,108 @@
 <style>
 body {
     margin: 0;
-    font-family: Arial;
+    font-family: Poppins, Arial;
     background: url("background.png") center/cover no-repeat fixed;
+    color: white;
 }
 
 .hidden { display: none; }
 
-.sidebar a.active { background: #8b5cf6; color: white; }
+#loadingScreen {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 22px;
+    z-index: 9999;
+}
+
+.app {
+    display: flex;
+}
+
+.sidebar {
+    width: 250px;
+    background: rgba(0,0,0,0.7);
+    padding: 20px;
+    min-height: 100vh;
+}
+
+.sidebar a {
+    display: block;
+    color: white;
+    padding: 10px;
+    text-decoration: none;
+    margin: 5px 0;
+}
+
+.sidebar a:hover {
+    background: #8b5cf6;
+}
+
+.main {
+    flex: 1;
+    padding: 20px;
+}
+
+.card {
+    background: rgba(0,0,0,0.6);
+    padding: 15px;
+    border-radius: 10px;
+    margin: 10px 0;
+}
 </style>
 </head>
 
 <body>
 
-<!-- LOADING -->
 <div id="loadingScreen">Se încarcă user...</div>
 
-<!-- APP -->
 <div class="app hidden" id="app">
 
+    <!-- SIDEBAR -->
     <aside class="sidebar">
 
-        <h2>Panel</h2>
+        <h2>LA NUEVA</h2>
 
-        <nav>
-            <a class="active" href="#">Dashboard</a>
-        </nav>
+        <a href="#"><i class="fa fa-home"></i> Dashboard</a>
+        <a href="membri.html">Membri</a>
+        <a href="taskuri.html">Taskuri</a>
 
         <button onclick="logout()">Logout</button>
     </aside>
 
-    <main>
+    <!-- MAIN -->
+    <main class="main">
 
-        <h2>Bun venit, <span id="accountName">...</span></h2>
+        <div class="card">
+            <h2>Bun venit, <span id="accountName">...</span></h2>
 
-        <img id="profileAvatar" width="80" style="border-radius:50%">
+            <img id="profileAvatar" width="80" style="border-radius:50%;cursor:pointer">
 
-        <input type="file" onchange="changeAvatar(event)">
+            <input type="file" id="avatarInput" hidden onchange="changeAvatar(event)">
+        </div>
 
-        <h3>Membri: <span id="memberCount">0</span></h3>
-        <h3>Online: <span id="onlineCount">0</span></h3>
+        <div class="card">
+            <h3>Membri total: <span id="memberCount">0</span></h3>
+            <h3>Membri online: <span id="onlineCount">0</span></h3>
+        </div>
 
-        <h3>Online list</h3>
-        <ul id="onlineMembers"></ul>
+        <div class="card">
+            <h3>Online members</h3>
+            <ul id="onlineMembers"></ul>
+        </div>
 
-        <h3>Phone: <span id="displayPhone"></span></h3>
-        <h3>Tasks: <span id="displayTasks"></span></h3>
+        <div class="card">
+            <h3>Phone: <span id="displayPhone">Nesetat</span></h3>
+            <h3>Tasks: <span id="displayTasks">0</span></h3>
+        </div>
 
     </main>
-</div>
 
+</div>
 
 <!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
@@ -70,7 +124,8 @@ const firebaseConfig = {
   apiKey: "AIzaSyDz980MG1I3lAxz2Uda9e2D9wkS_03Heb4",
   authDomain: "la-nueva-familia.firebaseapp.com",
   databaseURL: "https://la-nueva-familia-default-rtdb.firebaseio.com",
-  projectId: "la-nueva-familia"
+  projectId: "la-nueva-familia",
+  appId: "1:1010039699551:web:94f0d076866ef6719ac3ea"
 };
 
 firebase.initializeApp(firebaseConfig);
@@ -78,8 +133,7 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.database();
 
-let currentUID = null;
-let currentUser = null;
+let uid = null;
 
 
 // LOGIN CHECK
@@ -90,37 +144,36 @@ auth.onAuthStateChanged(async user => {
         return;
     }
 
-    currentUID = user.uid;
+    uid = user.uid;
 
-    const snap = await db.ref("users/" + currentUID).get();
-    currentUser = snap.val();
+    const snap = await db.ref("users/" + uid).get();
+    const data = snap.val();
 
-    if (!currentUser) return;
+    if (!data) return;
 
     document.getElementById("loadingScreen").style.display = "none";
     document.getElementById("app").classList.remove("hidden");
 
-    document.getElementById("accountName").innerText = currentUser.username || "User";
-    document.getElementById("profileAvatar").src = currentUser.avatar;
+    document.getElementById("accountName").innerText = data.username;
+    document.getElementById("profileAvatar").src = data.avatar;
 
-    db.ref("users/" + currentUID).update({
+    db.ref("users/" + uid).update({
         online: true,
         lastSeen: Date.now()
     });
 
-    loadPanel();
-
+    loadData();
 });
 
 
-// LOAD PANEL REALTIME
-function loadPanel() {
+// REALTIME DATA
+function loadData() {
 
     db.ref("users").on("value", snap => {
 
         const users = snap.val() || {};
 
-        let total = Object.keys(users).length;
+        let total = 0;
         let online = 0;
 
         const list = document.getElementById("onlineMembers");
@@ -128,11 +181,12 @@ function loadPanel() {
 
         Object.values(users).forEach(u => {
 
+            total++;
+
             if (u.online) {
                 online++;
                 list.innerHTML += `<li>🟢 ${u.username}</li>`;
             }
-
         });
 
         document.getElementById("memberCount").innerText = total;
@@ -140,20 +194,18 @@ function loadPanel() {
     });
 
 
-    // phone
-    db.ref("phones/" + currentUID).on("value", snap => {
+    db.ref("phones/" + uid).on("value", snap => {
         document.getElementById("displayPhone").innerText =
             snap.val()?.phone || "Nesetat";
     });
 
 
-    // tasks
     db.ref("tasks").on("value", snap => {
 
         let count = 0;
 
         snap.forEach(t => {
-            if (t.val().user === currentUID) count++;
+            if (t.val().user === uid) count++;
         });
 
         document.getElementById("displayTasks").innerText = count;
@@ -161,7 +213,11 @@ function loadPanel() {
 }
 
 
-// AVATAR CHANGE
+// AVATAR
+document.getElementById("profileAvatar").onclick = () => {
+    document.getElementById("avatarInput").click();
+};
+
 function changeAvatar(e) {
 
     const file = e.target.files[0];
@@ -171,7 +227,7 @@ function changeAvatar(e) {
 
     reader.onload = () => {
 
-        db.ref("users/" + currentUID).update({
+        db.ref("users/" + uid).update({
             avatar: reader.result
         });
 
@@ -185,7 +241,7 @@ function changeAvatar(e) {
 // LOGOUT
 function logout() {
 
-    db.ref("users/" + currentUID).update({
+    db.ref("users/" + uid).update({
         online: false
     });
 
@@ -197,10 +253,11 @@ function logout() {
 // OFFLINE FIX
 window.addEventListener("beforeunload", () => {
 
-    if (!currentUID) return;
+    if (!uid) return;
 
-    db.ref("users/" + currentUID).update({
-        online: false
+    db.ref("users/" + uid).update({
+        online: false,
+        lastSeen: Date.now()
     });
 });
 </script>
