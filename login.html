@@ -2,89 +2,89 @@
 <html lang="ro">
 <head>
 <meta charset="UTF-8">
-<title>Login - La Nueva Familia</title>
-<link rel="stylesheet" href="style.css">
+<title>Login</title>
 </head>
 
 <body>
 
-<div class="glass" style="max-width:400px;margin:100px auto;padding:30px;border-radius:20px;">
+<div style="max-width:400px;margin:100px auto;">
+    <h2>Login</h2>
 
-<h2>Login</h2>
+    <input id="email" placeholder="Email">
+    <input id="password" type="password" placeholder="Parolă">
 
-<input id="email" placeholder="Email" style="width:100%;padding:10px;margin:10px 0;">
-<input id="password" type="password" placeholder="Parolă" style="width:100%;padding:10px;margin:10px 0;">
-
-<button onclick="login()">Login</button>
-<button onclick="register()">Register</button>
-
+    <button onclick="register()">Register</button>
+    <button onclick="login()">Login</button>
 </div>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 
-import {
-  getDatabase,
-  ref,
-  set
-} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js";
+<script>
+const firebaseConfig = {
+  apiKey: "XXX",
+  authDomain: "XXX",
+  databaseURL: "XXX",
+  projectId: "XXX"
+};
 
-import { firebaseConfig } from "./firebase.js";
+firebase.initializeApp(firebaseConfig);
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getDatabase(app);
+const auth = firebase.auth();
+const db = firebase.database();
+
 
 // REGISTER
-window.register = function () {
+function register() {
 
-  const email = document.getElementById("email").value;
-  const pass = document.getElementById("password").value;
+    const email = document.getElementById("email").value;
+    const pass = document.getElementById("password").value;
 
-  createUserWithEmailAndPassword(auth, email, pass)
-    .then((userCred) => {
+    auth.createUserWithEmailAndPassword(email, pass)
+    .then(userCred => {
 
-      const user = userCred.user;
+        const user = userCred.user;
 
-      // salvăm user în DB
-      set(ref(db, "users/" + user.uid), {
-        email: email,
-        role: "member",
-        createdAt: Date.now()
-      });
+        db.ref("users/" + user.uid).set({
+            email: email,
+            username: email.split("@")[0],
+            avatar: "https://i.imgur.com/zYxDCQT.png",
+            online: true,
+            lastSeen: Date.now()
+        });
 
-      alert("Cont creat!");
-      window.location.href = "index.html";
+        localStorage.setItem("lnf_current_user", user.uid);
+
+        window.location.href = "index.html";
     })
     .catch(err => alert(err.message));
-};
+}
+
 
 // LOGIN
-window.login = function () {
+function login() {
 
-  const email = document.getElementById("email").value;
-  const pass = document.getElementById("password").value;
+    const email = document.getElementById("email").value;
+    const pass = document.getElementById("password").value;
 
-  signInWithEmailAndPassword(auth, email, pass)
-    .then(() => {
-      alert("Logat!");
-      window.location.href = "index.html";
+    auth.signInWithEmailAndPassword(email, pass)
+    .then(userCred => {
+
+        const user = userCred.user;
+
+        db.ref("users/" + user.uid).update({
+            online: true,
+            lastSeen: Date.now()
+        });
+
+        localStorage.setItem("lnf_current_user", user.uid);
+
+        window.location.href = "index.html";
     })
     .catch(err => alert(err.message));
-};
-
-// dacă e logat -> redirect
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    console.log("Logged:", user.email);
-  }
-});
+}
 </script>
 
 </body>
