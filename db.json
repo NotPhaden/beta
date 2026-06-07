@@ -1,0 +1,28 @@
+{
+  "users": {
+    "username1": {
+      "username": "username1",
+      "password": "hash_or_plain (NU recomand)",
+      "avatar": "url",
+      "online": true,
+      "lastSeen": 1710000000000
+    }
+  },
+
+  "tasks": {
+    "taskId1": {
+      "user": "username1",
+      "name": "Task name",
+      "role": "Lider",
+      "desc": "Descriere",
+      "dovada": "base64_or_url",
+      "data": "07.06.2026 12:00"
+    }
+  },
+
+  "phones": {
+    "username1": {
+      "phone": "07xxxxxxxx"
+    }
+  }
+}

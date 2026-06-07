@@ -1,0 +1,377 @@
+
+<head>
+        <link rel="icon" type="image/png" href="logo.png">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telefon - La Nueva Familia</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+
+<body>
+
+<div class="overlay"></div>
+
+<div class="app">
+
+    <div class="sidebar">
+
+        <div class="logo">
+            <h1>LA NUEVA</h1>
+            <span>FAMILIA</span>
+            <p>MAFIA PANEL</p>
+        </div>
+
+        <nav>
+
+            <a href="index.html">
+                <i class="fa-solid fa-house"></i>
+                Dashboard
+            </a>
+
+            <a href="membri.html">
+                <i class="fa-solid fa-users"></i>
+                Membri
+            </a>
+
+            <a href="uniforma.html">
+                <i class="fa-solid fa-shirt"></i>
+                Uniformă
+            </a>
+
+            <a href="locatii.html">
+                <i class="fa-solid fa-location-dot"></i>
+                Locații
+            </a>
+
+            <a href="infocraft.html">
+                <i class="fa-solid fa-circle-info"></i>
+                Info-Craft
+            </a>
+
+            <a href="craftarme.html">
+                <i class="fa-solid fa-hammer"></i>
+                Craft Arme
+            </a>
+
+
+
+            <a href="livrari.html">
+                <i class="fa-solid fa-truck"></i>
+                Livrări
+            </a>
+
+            <a class="active" href="telefon.html">
+                <i class="fa-solid fa-phone"></i>
+                Nr Tel
+            </a>
+
+            <a href="taxa.html">
+                <i class="fa-solid fa-money-bill"></i>
+                Taxă
+            </a>
+
+            <a href="donatii.html">
+                <i class="fa-solid fa-hand-holding-dollar"></i>
+                Donații Familie
+            </a>
+
+            <a href="taskuri.html">
+                <i class="fa-solid fa-list-check"></i>
+                Task-uri
+            </a>
+
+        </nav>
+
+    </div>
+
+    <div class="main">
+
+        <div class="page-title">
+            <h1>Număr Telefon</h1>
+            <p>Gestionează numărul tău</p>
+        </div>
+
+        <div
+            class="panel glass"
+            id="phoneFormBox"
+        >
+
+            <h2>
+                Adaugă număr telefon
+            </h2>
+
+            <input
+                id="phoneInput"
+                type="text"
+                placeholder="07xxxxxxxx"
+                style="
+                    width:100%;
+                    padding:15px;
+                    border:none;
+                    border-radius:12px;
+                    margin-top:20px;
+                    outline:none;
+                "
+            >
+
+            <button
+                onclick="savePhone()"
+                style="
+                    width:100%;
+                    margin-top:20px;
+                    padding:15px;
+                    border:none;
+                    border-radius:12px;
+                    cursor:pointer;
+                "
+            >
+                Salvează
+            </button>
+
+        </div>
+
+        <div
+            class="members-grid"
+            id="phoneInfo"
+            style="display:none;"
+        >
+
+            <div class="member-card glass">
+
+                <img
+                    id="savedAvatar"
+                    src="https://i.imgur.com/zYxDCQT.png"
+                    class="member-avatar"
+                    onclick="viewPhone()"
+                >
+
+                <h2 id="savedName">
+                    User
+                </h2>
+
+                <span class="member-rank">
+                    Family Member
+                </span>
+
+                <div
+                    class="member-status"
+                    onclick="viewPhone()"
+                    style="cursor:pointer;"
+                >
+                    👁️ Vizualizează
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- OVERLAY -->
+<div
+    id="popupOverlay"
+    onclick="closePhonePopup()"
+    style="
+        display:none;
+        position:fixed;
+        top:0;
+        left:0;
+        width:100%;
+        height:100%;
+        background:rgba(0,0,0,.6);
+        z-index:9998;
+    "
+></div>
+
+<div
+    id="phonePopup"
+    class="glass"
+    style="
+        display:none;
+        position:fixed;
+        top:50%;
+        left:50%;
+        transform:translate(-50%, -50%);
+        width:350px;
+        padding:30px;
+        border-radius:20px;
+        z-index:9999;
+        text-align:center;
+        backdrop-filter:blur(20px);
+    "
+>
+
+    <h2>
+        Număr Telefon
+    </h2>
+
+    <p
+        id="popupPhone"
+        style="
+            margin-top:20px;
+            font-size:24px;
+            font-weight:600;
+        "
+    ></p>
+
+    <button
+        onclick="closePhonePopup()"
+        style="
+            margin-top:25px;
+            width:100%;
+            padding:14px;
+            border:none;
+            border-radius:12px;
+            cursor:pointer;
+        "
+    >
+        Închide
+    </button>
+
+</div>
+
+<script src="script.js"></script>
+
+<script>
+
+function savePhone() {
+
+    const currentUser =
+        localStorage.getItem(
+            "lnf_current_user"
+        );
+
+    const phone =
+        document.getElementById(
+            "phoneInput"
+        ).value.trim();
+
+    if (!phone) {
+        alert(
+            "Introdu un număr!"
+        );
+        return;
+    }
+
+    localStorage.setItem(
+        `phone_${currentUser}`,
+        phone
+    );
+
+    loadPhonePage();
+}
+
+function loadPhonePage() {
+
+    const currentUser =
+        localStorage.getItem(
+            "lnf_current_user"
+        );
+
+    if (!currentUser) return;
+
+    const users =
+        JSON.parse(
+            localStorage.getItem(
+                "lnf_users"
+            )
+        ) || [];
+
+    const current =
+        users.find(
+            u =>
+                u.username ===
+                currentUser
+        );
+
+    const savedPhone =
+        localStorage.getItem(
+            `phone_${currentUser}`
+        );
+
+    if (savedPhone) {
+
+        document.getElementById(
+            "phoneFormBox"
+        ).style.display =
+            "none";
+
+        document.getElementById(
+            "phoneInfo"
+        ).style.display =
+            "grid";
+
+        document.getElementById(
+            "savedName"
+        ).innerText =
+            currentUser;
+
+        if (
+            current &&
+            current.avatar
+        ) {
+            document.getElementById(
+                "savedAvatar"
+            ).src =
+                current.avatar;
+        }
+    }
+}
+
+function viewPhone() {
+
+    const currentUser =
+        localStorage.getItem(
+            "lnf_current_user"
+        );
+
+    const phone =
+        localStorage.getItem(
+            `phone_${currentUser}`
+        );
+
+    if (!phone) return;
+
+    document.getElementById(
+        "popupPhone"
+    ).innerText =
+        phone;
+
+    document.getElementById(
+        "phonePopup"
+    ).style.display =
+        "block";
+
+    document.getElementById(
+        "popupOverlay"
+    ).style.display =
+        "block";
+}
+
+function closePhonePopup() {
+
+    document.getElementById(
+        "phonePopup"
+    ).style.display =
+        "none";
+
+    document.getElementById(
+        "popupOverlay"
+    ).style.display =
+        "none";
+}
+
+loadPhonePage();
+
+</script>
+
+</body>
