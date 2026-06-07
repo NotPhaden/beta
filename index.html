@@ -1,262 +1,177 @@
 <!DOCTYPE html>
 <html lang="ro">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>La Nueva Familia Panel</title>
+<meta charset="UTF-8">
+<title>La Nueva Familia Panel</title>
 
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
-    <style>
-        #loadingScreen {
-            position: fixed;
-            inset: 0;
-            background: url("background.png") center/cover no-repeat;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            z-index: 99999;
-            color: white;
-        }
+<style>
+body {
+    margin: 0;
+    font-family: Arial;
+    background: url("background.png") center/cover no-repeat fixed;
+}
 
-        #loadingScreen::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: rgba(0,0,0,0.65);
-        }
+.hidden { display: none; }
 
-        .loading-text {
-            position: relative;
-            font-size: 28px;
-            font-weight: 600;
-            animation: pulse 1.2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { opacity: 0.4; }
-            50% { opacity: 1; }
-            100% { opacity: 0.4; }
-        }
-    </style>
+.sidebar a.active { background: #8b5cf6; color: white; }
+</style>
 </head>
 
 <body>
 
 <!-- LOADING -->
-<div id="loadingScreen">
-    <div class="loading-text">Se încarcă panel...</div>
-</div>
+<div id="loadingScreen">Se încarcă user...</div>
 
 <!-- APP -->
-<div class="app" id="app" style="display:none;">
+<div class="app hidden" id="app">
 
-    <!-- SIDEBAR -->
     <aside class="sidebar">
 
-        <div class="logo">
-            <h1>LA NUEVA</h1>
-            <span>FAMILIA</span>
-            <p>MAFIA PANEL</p>
-        </div>
+        <h2>Panel</h2>
 
         <nav>
-            <a class="active" href="index.html"><i class="fa-solid fa-house"></i> Dashboard</a>
-            <a href="membri.html"><i class="fa-solid fa-users"></i> Membri</a>
-            <a href="uniforma.html"><i class="fa-solid fa-shirt"></i> Uniformă</a>
-            <a href="locatii.html"><i class="fa-solid fa-location-dot"></i> Locații</a>
-            <a href="infocraft.html"><i class="fa-solid fa-circle-info"></i> Info-Craft</a>
-            <a href="craftarme.html"><i class="fa-solid fa-hammer"></i> Craft Arme</a>
-            <a href="taskuri.html"><i class="fa-solid fa-list-check"></i> Task-uri</a>
-            <a href="livrari.html"><i class="fa-solid fa-truck"></i> Livrări</a>
-            <a href="fonduri.html"><i class="fa-solid fa-money-bill-wave"></i> Fonduri</a>
-            <a href="telefon.html"><i class="fa-solid fa-phone"></i> Nr Tel</a>
-            <a href="taxa.html"><i class="fa-solid fa-money-bill"></i> Taxă</a>
-            <a href="donatii.html"><i class="fa-solid fa-hand-holding-dollar"></i> Donații</a>
+            <a class="active" href="#">Dashboard</a>
         </nav>
 
+        <button onclick="logout()">Logout</button>
     </aside>
 
-    <!-- MAIN -->
-    <main class="main">
+    <main>
 
-        <!-- PROFILE -->
-        <div class="hero">
+        <h2>Bun venit, <span id="accountName">...</span></h2>
 
-            <div class="profile-card glass">
+        <img id="profileAvatar" width="80" style="border-radius:50%">
 
-                <img id="profileAvatar"
-                     src="https://i.imgur.com/zYxDCQT.png"
-                     style="width:90px;height:90px;border-radius:50%;cursor:pointer;"
-                     onclick="document.getElementById('avatarInput').click()">
+        <input type="file" onchange="changeAvatar(event)">
 
-                <input type="file" id="avatarInput" hidden>
+        <h3>Membri: <span id="memberCount">0</span></h3>
+        <h3>Online: <span id="onlineCount">0</span></h3>
 
-                <div>
-                    <small>Bun venit,</small>
-                    <h2 id="accountName">User</h2>
-                    <span class="badge">Member</span>
-                </div>
+        <h3>Online list</h3>
+        <ul id="onlineMembers"></ul>
 
-            </div>
-        </div>
-
-        <!-- STATS -->
-        <div class="stats">
-
-            <div class="card glass">
-                <i class="fa-solid fa-users"></i>
-                <div>
-                    <small>MEMBRI</small>
-                    <h2 id="memberCount">0</h2>
-                </div>
-            </div>
-
-            <div class="card glass">
-                <i class="fa-solid fa-signal"></i>
-                <div>
-                    <small>ONLINE</small>
-                    <h2 id="onlineCount">0</h2>
-                </div>
-            </div>
-
-        </div>
-
-        <!-- DASHBOARD -->
-        <div class="dashboard-grid">
-
-            <div class="panel glass">
-                <h3>MEMBRI ONLINE</h3>
-                <ul id="onlineMembers"></ul>
-            </div>
-
-            <div class="panel glass">
-                <h3>INFORMAȚII MEMBRU</h3>
-
-                <p><b>Telefon:</b> <span id="displayPhone">Nesetat</span></p>
-                <p><b>Task-uri:</b> <span id="displayTasks">0</span></p>
-
-            </div>
-
-        </div>
+        <h3>Phone: <span id="displayPhone"></span></h3>
+        <h3>Tasks: <span id="displayTasks"></span></h3>
 
     </main>
 </div>
 
+
 <!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 
-<!-- FIREBASE CONFIG -->
 <script>
 const firebaseConfig = {
-  apiKey: "XXX",
-  authDomain: "XXX",
-  databaseURL: "XXX",
-  projectId: "XXX",
+  apiKey: "AIzaSyDz980MG1I3lAxz2Uda9e2D9wkS_03Heb4",
+  authDomain: "la-nueva-familia.firebaseapp.com",
+  databaseURL: "https://la-nueva-familia-default-rtdb.firebaseio.com",
+  projectId: "la-nueva-familia"
 };
 
 firebase.initializeApp(firebaseConfig);
+
+const auth = firebase.auth();
 const db = firebase.database();
-</script>
 
-<!-- SCRIPT -->
-<script>
+let currentUID = null;
+let currentUser = null;
 
-let currentUser = localStorage.getItem("lnf_current_user");
 
-// redirect dacă nu e logat
-if (!currentUser) {
-    window.location.href = "login.html";
-}
+// LOGIN CHECK
+auth.onAuthStateChanged(async user => {
 
-// ================= LOAD USER =================
-function loadUser() {
-    db.ref("users/" + currentUser).once("value", snap => {
+    if (!user) {
+        window.location.href = "login.html";
+        return;
+    }
 
-        if (!snap.exists()) return;
+    currentUID = user.uid;
 
-        const user = snap.val();
+    const snap = await db.ref("users/" + currentUID).get();
+    currentUser = snap.val();
 
-        document.getElementById("accountName").innerText = user.username;
-        document.getElementById("profileAvatar").src = user.avatar || "https://i.imgur.com/zYxDCQT.png";
+    if (!currentUser) return;
 
-    });
-}
+    document.getElementById("loadingScreen").style.display = "none";
+    document.getElementById("app").classList.remove("hidden");
 
-// ================= ONLINE UPDATE =================
-function setOnline() {
-    db.ref("users/" + currentUser).update({
+    document.getElementById("accountName").innerText = currentUser.username || "User";
+    document.getElementById("profileAvatar").src = currentUser.avatar;
+
+    db.ref("users/" + currentUID).update({
         online: true,
         lastSeen: Date.now()
     });
-}
 
-// ================= LOAD STATS =================
-function loadStats() {
+    loadPanel();
+
+});
+
+
+// LOAD PANEL REALTIME
+function loadPanel() {
 
     db.ref("users").on("value", snap => {
 
-        let users = snap.val() || {};
+        const users = snap.val() || {};
 
-        let list = Object.values(users);
+        let total = Object.keys(users).length;
+        let online = 0;
 
-        document.getElementById("memberCount").innerText = list.length;
+        const list = document.getElementById("onlineMembers");
+        list.innerHTML = "";
 
-        let now = Date.now();
+        Object.values(users).forEach(u => {
 
-        let online = list.filter(u => u.online && now - u.lastSeen < 20000);
+            if (u.online) {
+                online++;
+                list.innerHTML += `<li>🟢 ${u.username}</li>`;
+            }
 
-        document.getElementById("onlineCount").innerText = online.length;
-
-        let html = "";
-
-        online.forEach(u => {
-            html += `<li>🟢 ${u.username}</li>`;
         });
 
-        document.getElementById("onlineMembers").innerHTML = html;
+        document.getElementById("memberCount").innerText = total;
+        document.getElementById("onlineCount").innerText = online;
+    });
+
+
+    // phone
+    db.ref("phones/" + currentUID).on("value", snap => {
+        document.getElementById("displayPhone").innerText =
+            snap.val()?.phone || "Nesetat";
+    });
+
+
+    // tasks
+    db.ref("tasks").on("value", snap => {
+
+        let count = 0;
+
+        snap.forEach(t => {
+            if (t.val().user === currentUID) count++;
+        });
+
+        document.getElementById("displayTasks").innerText = count;
     });
 }
 
-// ================= PHONE =================
-function loadPhone() {
-    db.ref("phones/" + currentUser).once("value", snap => {
-        if (snap.exists()) {
-            document.getElementById("displayPhone").innerText = snap.val();
-        }
-    });
-}
 
-// ================= TASKS =================
-function loadTasks() {
-    db.ref("tasks").once("value", snap => {
+// AVATAR CHANGE
+function changeAvatar(e) {
 
-        let tasks = snap.val() || {};
-
-        let arr = Object.values(tasks);
-
-        let userTasks = arr.filter(t => t.user === currentUser).length;
-
-        document.getElementById("displayTasks").innerText = userTasks;
-    });
-}
-
-// ================= AVATAR CHANGE =================
-document.getElementById("avatarInput").addEventListener("change", function(e){
-
-    let file = e.target.files[0];
+    const file = e.target.files[0];
     if (!file) return;
 
-    let reader = new FileReader();
+    const reader = new FileReader();
 
-    reader.onload = function() {
+    reader.onload = () => {
 
-        db.ref("users/" + currentUser).update({
+        db.ref("users/" + currentUID).update({
             avatar: reader.result
         });
 
@@ -264,28 +179,30 @@ document.getElementById("avatarInput").addEventListener("change", function(e){
     };
 
     reader.readAsDataURL(file);
+}
+
+
+// LOGOUT
+function logout() {
+
+    db.ref("users/" + currentUID).update({
+        online: false
+    });
+
+    auth.signOut();
+    window.location.href = "login.html";
+}
+
+
+// OFFLINE FIX
+window.addEventListener("beforeunload", () => {
+
+    if (!currentUID) return;
+
+    db.ref("users/" + currentUID).update({
+        online: false
+    });
 });
-
-// ================= HEARTBEAT =================
-setInterval(() => {
-    setOnline();
-}, 5000);
-
-// ================= INIT =================
-window.addEventListener("load", () => {
-
-    setTimeout(() => {
-        document.getElementById("loadingScreen").style.display = "none";
-        document.getElementById("app").style.display = "flex";
-    }, 1500);
-
-    loadUser();
-    loadStats();
-    loadPhone();
-    loadTasks();
-    setOnline();
-});
-
 </script>
 
 </body>
