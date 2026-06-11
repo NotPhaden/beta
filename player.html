@@ -1,0 +1,223 @@
+
+<head>
+<link rel="icon" type="image/png" href="logo.png">
+<meta charset="UTF-8">
+<title>Player PRO</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+    <div class="logo">PLAYER</div>
+    <button class="back-btn" onclick="goBack()">← Înapoi</button>
+</header>
+
+<section class="player-page">
+
+<div class="player-container">
+    <div class="video-wrapper">
+        <iframe id="mainPlayer" allowfullscreen></iframe>
+    </div>
+</div>
+
+<div class="server-box">
+    <button class="server-btn active" onclick="setServer(1)">Rumble</button>
+    <button class="server-btn" onclick="setServer(2)">Archive</button>
+</div>
+
+</section>
+
+<section class="episodes-section">
+    <div class="episodes-title">Episoade</div>
+    <div class="episodes-grid player" id="grid"></div>
+</section>
+
+<div class="next-box">
+    <button class="next-btn" onclick="nextEpisode()">▶ Următorul</button>
+</div>
+
+<script>
+
+const data = {
+soy:[
+    { s1:"https://rumble.com/embed/v78w068/?pub=4pp93q", s2:"ep1_20260610" },
+    { s1:"https://rumble.com/embed/v78vzve/?pub=4pp93q", s2:"ep2_20260610" },
+    { s1:"ep3", s2:"ep3" },
+    { s1:"https://rumble.com/embed/v78w0b6/?pub=4pp93q", s2:"ep4_20260610" },
+    { s1:"https://rumble.com/embed/v78wlae/?pub=4pp93q", s2:"ep5_20260610" },
+    { s1:"ep6", s2:"ep6" },
+
+    { s1:"https://rumble.com/embed/v78w1nc/?pub=4pp93q", s2:"ep7_20260610" },
+    { s1:"https://rumble.com/embed/v78w2vq/?pub=4pp93q", s2:"ep8_20260610" },
+    { s1:"https://rumble.com/embed/v78whla/?pub=4pp93q", s2:"ep9_20260610" },
+    { s1:"https://rumble.com/embed/v78wk6i/?pub=4pp93q", s2:"ep_pune10" },
+
+    { s1:"https://rumble.com/embed/v78xy4g/?pub=4pp93q", s2:"ep11_20260611" },
+    { s1:"https://rumble.com/embed/v78xyc2/?pub=4pp93q", s2:"ep12_20260611" },
+    { s1:"https://rumble.com/embed/v78xyka/?pub=4pp93q", s2:"ep13_20260611" },
+    { s1:"https://rumble.com/embed/v78xyte/?pub=4pp93q", s2:"ep14_20260611" },
+    { s1:"https://rumble.com/embed/v78ygnm/?pub=4pp93q", s2:"ep" },
+],
+
+simsala:[
+    { s1:"https://rumble.com/embed/v78y7o0/?pub=4pp93q", s2:"ep1" }
+],
+
+flint:[
+    { s1:"link", s2:"ep1" }
+],
+
+printesa: [
+    { s1:"https://rumble.com/embed/v78y908/?pub=4pp93q", s2:"ep-1-balerina" },
+    { s1:"https://rumble.com/embed/v78y9a4/?pub=4pp93q", s2:"ep-2-balerina" },
+    { s1:"https://rumble.com/embed/v78y9c4/?pub=4pp93q", s2:"ep-3-balerina" },
+    { s1:"https://rumble.com/embed/v78y9ek/?pub=4pp93q", s2:"ep-4_20260611" },
+    { s1:"https://rumble.com/embed/v78y9k0/?pub=4pp93q", s2:"ep-5-balerina" },
+    { s1:"https://rumble.com/embed/v78y9hc/?pub=4pp93q", s2:"ep-6_20260611_202606" },
+    { s1:"https://rumble.com/embed/v78y9q0/?pub=4pp93q", s2:"ep-7-balerina" },
+    { s1:"https://rumble.com/embed/v78y9uy/?pub=4pp93q", s2:"ep-8-balerina" },
+
+
+
+],
+
+bona: [
+        { s1:"https://rumble.com/embed/v78ybw6/?pub=4pp93q", s2:"film_20260611" },
+
+
+],
+
+tom: [
+  { s1:"link", s2:"ep8" },
+
+],
+
+dorinte: [
+        { s1:"https://rumble.com/embed/v78ycj6/?pub=4pp93q", s2:"16wishes.mp-4" },
+
+
+],
+
+better: [
+        { s1:"https://rumble.com/embed/v78yfai/?pub=4pp93q", s2:"cumsafacibaiatulperfect.mp4" },
+
+
+],
+
+camp: [
+        { s1:"https://rumble.com/embed/v78yh5s/?pub=4pp93q", s2:"camo" },
+
+
+],
+
+catel:[
+    { s1:"https://rumble.com/embed/v78y6f0/?pub=4pp93q", s2:"catelul-blogger-sezonul-1-episodul-1-online-in-romana" },
+    { s1:"https://rumble.com/embed/v78y6jg/?pub=4pp93q", s2:"catelul-blogger-sezonul-1-episodul-2-online-in-romana" },
+    { s1:"https://rumble.com/embed/v78y6oq/?pub=4pp93q", s2:"catelul-blogger-sezonul-1-episodul-3-online-in-romana" },
+    { s1:"https://rumble.com/embed/v78y6u2/?pub=4pp93q", s2:"catelul-blogger-sezonul-1-episodul-4-online-in-romana" },
+    { s1:"https://rumble.com/embed/v78y6w8/?pub=4pp93q", s2:"catelul-blogger-sezonul-1-episodul-5-online-in-romana" },
+    { s1:"https://rumble.com/embed/v78y72i/?pub=4pp93q", s2:"catelul-blogger-sezonul-1-episodul-6-online-in-romana" },
+    { s1:"https://rumble.com/embed/v78y798/?pub=4pp93q", s2:"catelul-blogger-sezonul-1-episodul-7-online-in-romana" },
+    { s1:"https://rumble.com/embed/v78y7j2/?pub=4pp93q", s2:"catelul-blogger-sezonul-1-episodul-8-online-in-romana" },
+
+
+]
+
+};
+
+const params = new URLSearchParams(location.search);
+const id = params.get("id");
+
+const episodes = (data[id] && data[id].length) ? data[id] : [];
+
+let current = 1;
+let server = 1;
+
+const player = document.getElementById("mainPlayer");
+const grid = document.getElementById("grid");
+
+function goBack(){
+    window.location.href = "index.html";
+}
+
+function getUrl(ep){
+    if(server === 1) return ep.s1;
+    return `https://archive.org/embed/${ep.s2}`;
+}
+
+function load(i){
+    if(!episodes[i-1]) return;
+
+    current = i;
+
+    if(player){
+        player.src = getUrl(episodes[i-1]);
+    }
+
+    localStorage.setItem("lastEpisode_" + id, current);
+
+    updateActive();
+}
+
+function setServer(s){
+    server = s;
+
+    document.querySelectorAll(".server-btn")
+    .forEach((b,i)=>{
+        b.classList.toggle("active", i===s-1);
+    });
+
+    load(current);
+}
+
+function generate(){
+    grid.innerHTML = "";
+
+    if(!episodes.length){
+        grid.innerHTML = "<p style='color:white'>Nu există episoade sau ID invalid.</p>";
+        return;
+    }
+
+    episodes.forEach((ep,i)=>{
+
+        const div = document.createElement("div");
+
+        div.className = "episode-card player";
+
+        div.innerHTML = `EP ${i+1}`;
+
+        div.onclick = ()=>load(i+1);
+
+        grid.appendChild(div);
+    });
+}
+
+function updateActive(){
+    document.querySelectorAll(".episode-card.player")
+    .forEach((c,i)=>{
+        c.classList.toggle("active", i===current-1);
+    });
+}
+
+function nextEpisode(){
+    if(current < episodes.length){
+        load(current+1);
+    }
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+    generate();
+
+    const saved = localStorage.getItem("lastEpisode_" + id);
+
+    if(saved){
+        load(parseInt(saved));
+    } else {
+        load(1);
+    }
+});
+
+</script>
+
+</body>
