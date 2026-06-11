@@ -2,213 +2,91 @@
 <html lang="ro">
 
 <head>
-    <link rel="icon" type="image/png" href="logo.png">
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>La Nueva Familia Panel</title>
-
-    <link rel="stylesheet" href="style.css">
-
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
-    <style>
-        #loadingScreen {
-            position: fixed;
-            inset: 0;
-            background: url("background.png") center/cover no-repeat;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            z-index: 99999;
-            color: white;
-        }
-
-        #loadingScreen::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: rgba(0,0,0,0.65);
-        }
-
-        .loading-text {
-            position: relative;
-            font-size: 28px;
-            font-weight: 600;
-            letter-spacing: 2px;
-            animation: pulse 1.2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { opacity: 0.4; transform: scale(0.98); }
-            50% { opacity: 1; transform: scale(1.02); }
-            100% { opacity: 0.4; transform: scale(0.98); }
-        }
-    </style>
+<link rel="icon" type="image/png" href="logo.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HYPERTOON</title>
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<!-- LOADING SCREEN -->
-<div id="loadingScreen">
-    <div class="loading-text">Loading Assets...</div>
-</div>
+<header>
+    <div class="logo">HYPERTOON</div>
+</header>
 
-<!-- AUTH -->
-<div class="auth-screen" id="authScreen">
+<section class="episodes-section">
 
-    <div class="auth-box glass">
+<div class="episodes-grid">
 
-        <div class="logo auth-logo">
-            <h1>LA NUEVA</h1>
-            <span>FAMILIA</span>
-            <p>MAFIA PANEL</p>
-        </div>
+    <!-- SOY LUNA -->
+    <div class="episode-card" onclick="openShow('soy')">
+        <img src="https://imgs.search.brave.com/SJMW1swBjjr3LlY8oY4jn6lRdvk6lkYTipCKvoo_n4A/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9leHRlcm5hbC1wcmV2aWV3/LnJlZGQuaXQvc295/LWx1bmEtMjAxNi1k/dWJsYXQtaW4tcm9t/YW5hLW9ubGluZS12/MC1aWll0Z0huVWc3/YWVTVDBBcmhXUlJB/UVdwSlRzYkRNejZ4/NDJDLWNHVDBNLmpw/Zz9hdXRvPXdlYnAm/cz1kN2IwOTJkMTcz/OGQ0YmVkZDdjYmZi/OGYzNTgzYjUwZTdm/NDZmZDBl">
+        <div class="card-title">Soy Luna</div>
+    </div>
 
-        <input type="text" id="username" placeholder="Nume cont">
-        <input type="password" id="password" placeholder="Parolă">
+    <!-- SIMSALA GRIMM -->
+    <div class="episode-card" onclick="openShow('simsala')">
+        <img src="https://imgs.search.brave.com/o2mY6XGITmmI1GZdBv025L6uuB7HnlDul5F74YFhHe4/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YXByb3h5LnR2dHJv/cGVzLm9yZy93aWR0/aC8xMjAwL2h0dHBz/Oi8vc3RhdGljLnR2/dHJvcGVzLm9yZy9w/bXdpa2kvcHViL2lt/YWdlcy9zaW1zYWxh/Z3JpbW0uanBn">
+        <div class="card-title">Simsala Grimm</div>
+    </div>
 
-        <button onclick="createAccount()">
-            Intră în panel
-        </button>
+    <!-- FLINTSTONES -->
+    <div class="episode-card" onclick="openShow('flint')">
+        <img src="https://imgs.search.brave.com/eRJqiN2fKTeQ4Z9uIKBCR2LfZ-DqDg4gkGGixC-AJsE/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/ZG96YWFuaW1hdGEu/bmV0L3dwLWNvbnRl/bnQvdXBsb2Fkcy8y/MDIwLzExL0ZhbWls/aWEtRmxpbnRzdG9uZS5qcGc">
+        <div class="card-title">Flintstones</div>
+    </div>
 
+    <!-- PRINȚESA BALERINĂ -->
+    <div class="episode-card" onclick="openShow('printesa')">
+        <img src="https://image.tmdb.org/t/p/w342/uOTYMzTlXFbWDZCxxc0vX9CvBsl.jpg">
+        <div class="card-title">Prințesa Balerină</div>
+    </div>
+
+    <!-- CĂȚELUL BLOGGER -->
+    <div class="episode-card" onclick="openShow('catel')">
+        <img src="https://deseneledublate.com/wp-content/uploads/2018/06/catelul-blogger-sezonul-1-dublat-in-romana-200x300.png">
+        <div class="card-title">Cățelul Blogger</div>
+    </div>
+
+    <!-- BONA MEA ESTE UN VAMPIR -->
+    <div class="episode-card" onclick="openShow('bona')">
+        <img src="https://imgs.search.brave.com/8pdghbBbzUsGjLP3xy0UM69RahvYZ4CqTAqcmBFD-gM/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/ZG96YWFuaW1hdGEu/bmV0L3dwLWNvbnRl/bnQvdXBsb2Fkcy8y/MDIxLzAzLzI1MHB4/LU15QmFieXNpdHRl/cnNhVmFtcGlyZVBv/c3Rlci5wbmc">
+        <div class="card-title">Bona Mea Este Un Vampir</div>
+    </div>
+
+    <!-- TOM & JERRY -->
+    <div class="episode-card" onclick="openShow('tom')">
+        <img src="https://imgs.search.brave.com/8k7GigvhpSGhylaB34mPjdcySmnhRaam07NTwMOCpHM/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly93YWxs/cGFwZXJjYXQuY29t/L3cvZnVsbC80LzUv/Yi8xMDY4OTI4LTE5/MjB4MTA4MC1kZXNr/dG9wLWZ1bGwtaGQt/dG9tLWFuZC1qZXJy/eS13YWxscGFwZXIu/anBn">
+        <div class="card-title">Tom & Jerry</div>
+    </div>
+
+    <!-- 16 DORINȚE -->
+    <div class="episode-card" onclick="openShow('dorinte')">
+        <img src="https://image.tmdb.org/t/p/w342/tO8TZvH83uHtrLnec6f684xfzOB.jpg">
+        <div class="card-title">16 Dorințe</div>
+    </div>
+
+    <!-- HOW TO BUILD A BETTER BOY -->
+    <div class="episode-card" onclick="openShow('better')">
+        <img src="https://imgs.search.brave.com/0hxylwV90mjo5tAFoLp98G48yGvQAWJV1Snp4JXGVo4/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zdGF0aWMud2lraWEubm9j/b29raWUubmV0L2Rp/c25leS1zdXBwb3J0/L2ltYWdlcy9kL2Q5/L0hvd190b19CdWls/ZF9hX0JldHRlcl9C/b3kuanBn">
+        <div class="card-title">Better Boy</div>
+    </div>
+
+    <!-- CAMP ROCK -->
+    <div class="episode-card" onclick="openShow('camp')">
+        <img src="https://image.tmdb.org/t/p/w342/7IXMqZnwccogptThay3togKIFWw.jpg">
+        <div class="card-title">Camp Rock</div>
     </div>
 
 </div>
 
-<!-- APP -->
-<div class="app" id="app" style="display:none;">
+</section>
 
-    <!-- SIDEBAR -->
-    <aside class="sidebar">
-
-        <div class="logo">
-            <h1>LA NUEVA</h1>
-            <span>FAMILIA</span>
-            <p>MAFIA PANEL</p>
-        </div>
-
-        <nav>
-            <a class="active" href="index.html"><i class="fa-solid fa-house"></i> Dashboard</a>
-            <a href="membri.html"><i class="fa-solid fa-users"></i> Membri</a>
-            <a href="uniforma.html"><i class="fa-solid fa-shirt"></i> Uniformă</a>
-            <a href="locatii.html"><i class="fa-solid fa-location-dot"></i> Locații</a>
-            <a href="infocraft.html"><i class="fa-solid fa-circle-info"></i> Info-Craft</a>
-            <a href="craftarme.html"><i class="fa-solid fa-hammer"></i> Craft Arme</a>
-            <a href="taskuri.html"><i class="fa-solid fa-list-check"></i> Task-uri</a>
-            <a href="livrari.html"><i class="fa-solid fa-truck"></i> Livrări</a>
-            <a href="fonduri.html"><i class="fa-solid fa-money-bill-wave"></i> Fonduri</a>
-            <a href="telefon.html"><i class="fa-solid fa-phone"></i> Nr Tel</a>
-            <a href="taxa.html"><i class="fa-solid fa-money-bill"></i> Taxă</a>
-            <a href="donatii.html"><i class="fa-solid fa-hand-holding-dollar"></i> Donații</a>
-        </nav>
-
-    </aside>
-
-    <!-- MAIN -->
-    <main class="main">
-
-        <!-- HERO -->
-        <div class="hero">
-
-            <div class="profile-card glass">
-
-                <div class="avatar-box">
-
-                    <img id="profileAvatar"
-                        src="https://i.imgur.com/zYxDCQT.png"
-                        alt="avatar"
-                        title="Schimbă poza"
-                        onclick="document.getElementById('avatarInput').click()">
-
-                    <input type="file" id="avatarInput" accept="image/*"
-                        style="display:none" onchange="changeAvatar(event)">
-
-                </div>
-
-                <div>
-                    <small>Bun venit înapoi,</small>
-                    <h2 id="accountName">User</h2>
-                    <span class="badge">Family Member</span>
-                </div>
-
-            </div>
-
-        </div>
-
-        <!-- STATS -->
-        <div class="stats">
-
-            <div class="card glass">
-                <i class="fa-solid fa-users"></i>
-                <div>
-                    <small>MEMBRI</small>
-                    <h2 id="memberCount">0/50</h2>
-                </div>
-            </div>
-
-            <div class="card glass">
-                <i class="fa-solid fa-signal"></i>
-                <div>
-                    <small>ONLINE</small>
-                    <h2 id="onlineCount">0</h2>
-                    <span class="green">Activi</span>
-                </div>
-            </div>
-
-        </div>
-
-        <!-- GRID -->
-        <div class="dashboard-grid">
-
-            <!-- ONLINE MEMBERS -->
-            <div class="panel glass">
-                <h3>MEMBRI ONLINE</h3>
-                <ul id="onlineMembers"></ul>
-            </div>
-
-            <!-- ALL MEMBERS (NEW) -->
-            <div class="panel glass">
-                <h3>TOȚI MEMBRII</h3>
-                <ul id="allMembers"></ul>
-            </div>
-
-            <!-- INFO -->
-            <div class="panel glass">
-
-                <h3>INFORMAȚII MEMBRU</h3>
-
-                <div class="activity-item">
-                    <strong>Număr telefon:</strong>
-                    <span id="displayPhone">Nesetat</span>
-                </div>
-
-                <div class="activity-item">
-                    <strong>Task-uri completate:</strong>
-                    <span id="displayTasks">0</span>
-                </div>
-
-            </div>
-
-        </div>
-
-    </main>
-
-</div>
-
-<!-- SCRIPT -->
-<script src="script.js"></script>
-
-<!-- LOADING -->
 <script>
-    window.addEventListener("load", () => {
-        setTimeout(() => {
-            document.getElementById("loadingScreen").style.display = "none";
-        }, 3000);
-    });
+function openShow(id){
+    window.location.href = "player.html?id=" + id;
+}
 </script>
 
 </body>
